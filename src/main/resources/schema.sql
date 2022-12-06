@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS TB_CLIENTE  (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    codigo_unico VARCHAR(250) NOT NULL,
+    nombres VARCHAR(250) NOT NULL,
+    apellidos VARCHAR(250) NOT NULL,
+    tipo_documento VARCHAR(5) NOT NULL,
+    numero_documento VARCHAR(10) NOT NULL
+);

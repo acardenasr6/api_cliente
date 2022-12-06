@@ -1,0 +1,8 @@
+version: '3.7'
+
+services:
+  api-cliente:
+    container_name: api_cliente
+    build: .
+    ports:
+      - 31005:8080
