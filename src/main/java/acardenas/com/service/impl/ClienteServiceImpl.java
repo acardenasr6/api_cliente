@@ -41,11 +41,28 @@ public class ClienteServiceImpl implements ClienteService {
             throw new ValidationException("¡No ha enviado el código del usuario!");
         }
 
-        if (!obtenerPorCodigo(cliente.getCodigoUnico()).isPresent()){
-            throw new ValidationException(String.format("¡No existe el Cliente con el código %s!",
-                    cliente.getCodigoUnico()));
-        }
+        Cliente clienteBd = obtenerPorCodigo(cliente.getCodigoUnico()).orElseThrow(
+                () -> new ValidationException(String.format("¡No existe el Cliente con el código %s!",
+                cliente.getCodigoUnico()))
+        );
 
-        return clienteRepository.actualizar(cliente).isPresent();
+        Cliente clienteParaActualiza = mergeCliente(cliente, clienteBd);
+
+        return clienteRepository.actualizar(clienteParaActualiza).isPresent();
+    }
+
+    private Cliente mergeCliente(Cliente clienteInput, Cliente clienteBd){
+
+        return Cliente.builder()
+                .codigoUnico(clienteBd.getCodigoUnico())
+                .nombres(Optional.ofNullable(clienteInput.getNombres())
+                        .orElse(clienteBd.getNombres()))
+                .apellidos(Optional.ofNullable(clienteInput.getApellidos())
+                        .orElse(clienteBd.getApellidos()))
+                .tipoDocumento(Optional.ofNullable(clienteInput.getTipoDocumento())
+                        .orElse(clienteBd.getTipoDocumento()))
+                .numeroDocumento(Optional.ofNullable(clienteInput.getNumeroDocumento()).
+                        orElse(clienteBd.getNumeroDocumento()))
+                .build();
     }
 }

@@ -8,7 +8,6 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
@@ -36,25 +35,21 @@ public class RestAspect {
         long inicio = System.currentTimeMillis();
 
         Object objResultado = joinPoint.proceed();
-        int status;
 
         if (objResultado instanceof ResponseEntity) {
 
             ResponseEntity<?> preResultado = (ResponseEntity<?>) objResultado;
 
-            if (!(preResultado.getBody() instanceof InputStreamResource)) {
+            int status = preResultado.getStatusCodeValue();
+            objResultado = preResultado.getBody();
 
-                status = preResultado.getStatusCodeValue();
-                objResultado = preResultado.getBody();
+            //resultado final
+            ObjectResponse<?> body = ObjectResponse.builder()
+                    .path(request.getRequestURI())
+                    .status(status)
+                    .data(objResultado).build();
 
-                //resultado final
-                ObjectResponse<?> body = ObjectResponse.builder()
-                        .path(request.getRequestURI())
-                        .status(status)
-                        .data(objResultado).build();
-
-                objResultado = ResponseEntity.status(status).body(body);
-            }
+            objResultado = ResponseEntity.status(status).body(body);
 
         }
 

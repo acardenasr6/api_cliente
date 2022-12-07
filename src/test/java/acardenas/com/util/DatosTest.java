@@ -19,6 +19,11 @@ public class DatosTest {
             .tipoDocumento("DNI")
             .numeroDocumento("75221458").build();
 
+    public final static Cliente CLIENTE_PARA_ACTUALIZAR = Cliente.builder()
+            .codigoUnico("55s")
+            .nombres("Armando James")
+            .numeroDocumento("75221458").build();
+
     public final static String MESSAGE_EXCEPTION_CLIENTE_EXISTENTE = "¡El cliente ya existe!";
 
     public final static String MESSAGE_EXCEPTION_CLIENTE_REQUERIDO = "¡No ha enviado el código del usuario!";

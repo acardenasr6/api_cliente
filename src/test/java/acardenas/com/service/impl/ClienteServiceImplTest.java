@@ -58,7 +58,7 @@ class ClienteServiceImplTest {
     void testActualizarCliente() throws ValidationException {
         when(clienteRepository.obtenerPorCodigo(anyString())).thenReturn(Optional.of(DatosTest.CLIENTE));
         when(clienteRepository.actualizar(any(Cliente.class))).thenReturn(Optional.of(1));
-        boolean cliente = clienteService.actualizar(DatosTest.CLIENTE);
+        boolean cliente = clienteService.actualizar(DatosTest.CLIENTE_PARA_ACTUALIZAR);
         assert(cliente);
         verify(clienteRepository).actualizar(any(Cliente.class));
         verify(clienteRepository).obtenerPorCodigo(any(String.class));
